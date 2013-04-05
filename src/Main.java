@@ -1,5 +1,4 @@
-import java.awt.Component;
-import java.awt.image.ComponentSampleModel;
+
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -30,7 +29,7 @@ public class Main {
 	static Pattern presented_pattern = Pattern.compile("^PRESENTED_STRING");
 	static Pattern transcribed_pattern = Pattern.compile("^TRANSCRIBED_STRING");
 	static Pattern input_pattern = Pattern.compile("^INPUT_STREAM");
-	
+	static boolean debug =false ; 
 	public static void main(String[] args) throws IOException{
 		int k=0;
 		String file ="data/log1.txt";
@@ -54,12 +53,9 @@ public class Main {
 			if(presented_matcher.find()){
 				String [] presented_components= line.split(",");
 				presented= presented_components[1];
-				presented_string=true;
-			
-				k++;
-				System.out.println("value of k is"+k);
-			}
-		
+				presented_string=true;			
+				
+			}		
 			if(transcribed_matcher.find()){
 				String [] transcribed_components= line.split(",");
 				transcribed=transcribed_components[1];
@@ -71,25 +67,38 @@ public class Main {
 					try {
 						input=input_components[1];
 						input_stream=true;
+						System.out.println("input::: "+input);
 					} catch (Exception e) {
 						System.out.println("input string is empty !");
 					}						
 				}
 				
 			}			
-			System.out.println("these are strings"+presented+"transcribed"+transcribed+"input"+input);			
-		if (input_stream==true & presented_string==true && transcribed_string==true){
-			//strings(presented, transcribed, input, 2);			
-			input=null;
-			transcribed=null;
-			presented=null;
-			input_stream=false;
-			presented_string=false;
-			transcribed_string=false;
-		
-		}else {
-			//System.out.println("fucking else ");
-		}
+			if(debug){
+				System.out.println(" these are strings "+presented+" transcribed "+transcribed+" input "+input);			
+			}
+			if (input_stream==true & presented_string==true && transcribed_string==true){
+				System.out.println("Presented String"+presented);
+				System.out.println("Transcribed String "+transcribed);
+				System.out.println("Input Stream"+input);				
+				ErrorCount err_count = strings(presented, transcribed, input, 2);			
+
+				System.out.println("");
+				
+				input=null;
+				transcribed=null;
+				presented=null;
+				input_stream=false;
+				presented_string=false;
+				transcribed_string=false;
+				if(debug){ 
+					k++;
+					System.out.println("value of k is"+k);
+				}
+				
+			}else {
+			//TODO:XXX
+			}
 		}
 	}
 
@@ -458,15 +467,6 @@ if(length_diff) {
     counter.inc(ErrorTypes.NUM_UNEQUAL_ALIGNMENTS);
 }
 
-if (silent >= 0) {
-    System.out.println("FINAL RESULT BASED ON MAYORITY\n");
-    if (silent == 0) {
-	stream.setIgnore_noerr(true);
-    }
-    
-    System.out.println(stream);
-    System.out.println("--------------");
-}
 
 if(ClassificationStreamSingleton.getStream() != null) {
     counter.merge(OfByOneAnalysis.obo_determine(triplets, silent));
