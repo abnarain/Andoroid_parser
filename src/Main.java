@@ -1,9 +1,13 @@
+import java.awt.Component;
+import java.awt.image.ComponentSampleModel;
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.HashSet;
 import java.util.Vector;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import dkohl.gatech.conditions.IsLetterCondition;
 import dkohl.gatech.conditions.IsNotCondition;
@@ -23,27 +27,69 @@ import dkohl.gatech.typing.model.FlaggableCharacterString;
 
 
 public class Main {
-public static void main(String[] args) throws IOException{
-	System.out.println("this is not it!");
-	String file ="data/log1.txt";
-	BufferedReader stream = null;
-	try {
-		stream = new BufferedReader(new FileReader(file));
-	} catch (FileNotFoundException e) {
-		// TODO Auto-generated catch block
-		e.printStackTrace();
-	}
-	String line = stream.readLine();
-	while ((line = stream.readLine()) != null) {
-		 String components[] = line.split(", ");	
-		 System.out.println(line);		 
-		 System.out.println("components are ");
-		 System.out.println(components);
-		 System.exit(1);
-	}
+
+	public static void main(String[] args) throws IOException{
+		System.out.println("this is not it!");
+		String file ="data/log1.txt";
+		BufferedReader stream = null;
+		try {
+			stream = new BufferedReader(new FileReader(file));
+		} catch (FileNotFoundException e) {		
+			e.printStackTrace();
+			System.out.println("The log file was not found!");
+		}
+		String line = stream.readLine();
+		while ((line = stream.readLine()) != null) {
+			//String components[] = line.split(", ");	
+		 		 
+			Pattern presented_pattern = Pattern.compile("^PRESENTED_STRING");
+			Pattern transcribed_pattern = Pattern.compile("^TRANSCRIBED_STRING");
+			Pattern input_pattern = Pattern.compile("^INPUT_STREAM");
+			System.out.println("the line is ");
+			System.out.println(line);
+			Matcher presented_matcher = presented_pattern.matcher(line);
+			Matcher transcribed_matcher = transcribed_pattern.matcher(line);
+			Matcher input_matcher = input_pattern.matcher(line);
+			if(presented_matcher.find()){
+				System.out.println("We got a presented matcher");
+				String [] presented_components= line.split(",");
+				System.out.println(presented_components[0]);
+				System.out.println(line);			
+				System.out.println(presented_components[0]);
+				System.out.println(presented_components[1]);						
+			}
+		
+			if(transcribed_matcher.find()){
+				System.out.println("We got a transcribed matcher");
+				String [] transcribed_components= line.split(",");
+				System.out.println(transcribed_components[0]);
+				System.out.println(line);			
+				System.out.println(transcribed_components[0]);			
+				System.out.println(transcribed_components[1]);						
+			}
+			if(input_matcher.find()){
+				System.out.println("We got a input matcher");
+				String [] input_components= line.split(",");
+				System.out.println(input_components[0]);
+				System.out.println(line);						
+				System.out.println(input_components[0]);
+				if(input_components.length > 0){
+					try {
+						System.out.println(input_components[1]);
+					} catch (Exception e) {
+						System.out.println("input string is empty !");
+					}						
+				}
+			}	
+		//System.out.println("components are ");
+		 //System.out.println(components);
+		 //System.exit(1);
+		 
+		}
 	//strings(presented, transcribed, input, silent);
-	
-}
+	//input_stream is the stream of keystrokes with backspaces.
+	//transcribed string is the final string that they submitted.
+	}
 
 
 /**
