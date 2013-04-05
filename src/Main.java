@@ -27,9 +27,12 @@ import dkohl.gatech.typing.model.FlaggableCharacterString;
 
 
 public class Main {
-
+	static Pattern presented_pattern = Pattern.compile("^PRESENTED_STRING");
+	static Pattern transcribed_pattern = Pattern.compile("^TRANSCRIBED_STRING");
+	static Pattern input_pattern = Pattern.compile("^INPUT_STREAM");
+	
 	public static void main(String[] args) throws IOException{
-		System.out.println("this is not it!");
+		
 		String file ="data/log1.txt";
 		BufferedReader stream = null;
 		try {
@@ -38,57 +41,52 @@ public class Main {
 			e.printStackTrace();
 			System.out.println("The log file was not found!");
 		}
+		String presented=null, transcribed=null, input=null;
+		boolean presented_string = false;
+		boolean transcribed_string = false; 
+		boolean input_stream =false;
+		
 		String line = stream.readLine();
 		while ((line = stream.readLine()) != null) {
-			//String components[] = line.split(", ");	
-		 		 
-			Pattern presented_pattern = Pattern.compile("^PRESENTED_STRING");
-			Pattern transcribed_pattern = Pattern.compile("^TRANSCRIBED_STRING");
-			Pattern input_pattern = Pattern.compile("^INPUT_STREAM");
-			System.out.println("the line is ");
-			System.out.println(line);
 			Matcher presented_matcher = presented_pattern.matcher(line);
 			Matcher transcribed_matcher = transcribed_pattern.matcher(line);
 			Matcher input_matcher = input_pattern.matcher(line);
 			if(presented_matcher.find()){
-				System.out.println("We got a presented matcher");
 				String [] presented_components= line.split(",");
-				System.out.println(presented_components[0]);
-				System.out.println(line);			
-				System.out.println(presented_components[0]);
-				System.out.println(presented_components[1]);						
+				presented= presented_components[1];
+				presented_string=true;
 			}
 		
 			if(transcribed_matcher.find()){
-				System.out.println("We got a transcribed matcher");
 				String [] transcribed_components= line.split(",");
-				System.out.println(transcribed_components[0]);
-				System.out.println(line);			
-				System.out.println(transcribed_components[0]);			
-				System.out.println(transcribed_components[1]);						
+				transcribed=transcribed_components[1];
+				transcribed_string=true;
 			}
 			if(input_matcher.find()){
-				System.out.println("We got a input matcher");
 				String [] input_components= line.split(",");
-				System.out.println(input_components[0]);
-				System.out.println(line);						
-				System.out.println(input_components[0]);
 				if(input_components.length > 0){
 					try {
-						System.out.println(input_components[1]);
+						input=input_components[1];
+						input_stream=true;
 					} catch (Exception e) {
 						System.out.println("input string is empty !");
 					}						
 				}
+				
 			}	
 		//System.out.println("components are ");
 		 //System.out.println(components);
-		 //System.exit(1);
-		 
+		 //System.exit(1);		 
 		}
-	//strings(presented, transcribed, input, silent);
-	//input_stream is the stream of keystrokes with backspaces.
-	//transcribed string is the final string that they submitted.
+		if (input_stream==true & presented_string==true && transcribed_string==true){
+			strings(presented, transcribed, input, 2);			
+			input=null;
+			transcribed=null;
+			presented=null;
+			input_stream=false;
+			presented_string=false;
+			transcribed_string=false;
+		}
 	}
 
 
