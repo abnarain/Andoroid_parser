@@ -66,8 +66,7 @@ public class Main {
 				if(input_components.length > 0){
 					try {
 						input=input_components[1];
-						input_stream=true;
-						System.out.println("input::: "+input);
+						input_stream=true;						
 					} catch (Exception e) {
 						System.out.println("input string is empty !");
 					}						
@@ -78,12 +77,12 @@ public class Main {
 				System.out.println(" these are strings "+presented+" transcribed "+transcribed+" input "+input);			
 			}
 			if (input_stream==true & presented_string==true && transcribed_string==true){
-				System.out.println("Presented String"+presented);
-				System.out.println("Transcribed String "+transcribed);
-				System.out.println("Input Stream"+input);				
+				System.out.println("Presented String: "+presented);
+				System.out.println("Transcribed String: "+transcribed);
+				System.out.println("Input Stream: "+input);				
 				ErrorCount err_count = strings(presented, transcribed, input, 2);			
-
-				System.out.println("");
+				System.out.println(err_count.toString());
+				System.out.println("====");
 				
 				input=null;
 				transcribed=null;
