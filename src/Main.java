@@ -32,7 +32,7 @@ public class Main {
 	static Pattern input_pattern = Pattern.compile("^INPUT_STREAM");
 	
 	public static void main(String[] args) throws IOException{
-		
+		int k=0;
 		String file ="data/log1.txt";
 		BufferedReader stream = null;
 		try {
@@ -55,6 +55,9 @@ public class Main {
 				String [] presented_components= line.split(",");
 				presented= presented_components[1];
 				presented_string=true;
+			
+				k++;
+				System.out.println("value of k is"+k);
 			}
 		
 			if(transcribed_matcher.find()){
@@ -73,22 +76,22 @@ public class Main {
 					}						
 				}
 				
-			}	
-		//System.out.println("components are ");
-		 //System.out.println(components);
-		 //System.exit(1);		 
-		}
+			}			
+			System.out.println("these are strings"+presented+"transcribed"+transcribed+"input"+input);			
 		if (input_stream==true & presented_string==true && transcribed_string==true){
-			strings(presented, transcribed, input, 2);			
+			//strings(presented, transcribed, input, 2);			
 			input=null;
 			transcribed=null;
 			presented=null;
 			input_stream=false;
 			presented_string=false;
 			transcribed_string=false;
+		
+		}else {
+			//System.out.println("fucking else ");
+		}
 		}
 	}
-
 
 /**
  * Flagging the characters in input stream that compose the transcribed
